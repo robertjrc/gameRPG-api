@@ -1,20 +1,10 @@
 class GroupResetSeason {
     execute(_group) {
         function setNextSeason() {
-            let date = new Date()
-            let day = date.getDay()
+            const date = new Date()
 
-            if (day === 0) {
-                date.setDate(date.getDate() + 7)
-                date.setHours(0, 0, 0)
-                return date.getTime()
-            }
-
-            let lastWeekDay = 6
-            let daysRemaining = lastWeekDay - day
-
-            date.setDate(date.getDate() + daysRemaining + 1)
-            date.setHours(0, 0, 0)
+            date.setMonth(date.getMonth() + 1, 1)
+            date.setHours(0, 0, 0, 0)
 
             return date.getTime()
         }
@@ -31,25 +21,25 @@ class GroupResetSeason {
         }).reverse()
 
         let endSeasonInfo = {
-            season: _group.currentSeason.season, 
+            season: _group.currentSeason.season,
             playerName: "",
             playerScore: 0,
             coins: 1,
             diamonds: 1,
-            keys: 1 
+            keys: 1
         }
 
         let topPlayer = _group.players[0]
 
         endSeasonInfo.playerName = topPlayer.name
         endSeasonInfo.playerScore = topPlayer.scoreSeason
-        endSeasonInfo.coins = Math.floor(topPlayer.scoreSeason * 1) 
-        endSeasonInfo.diamonds = Math.floor((topPlayer.scoreSeason*1)/50)
-        endSeasonInfo.keys = Math.floor((topPlayer.scoreSeason*1)/500)
+        endSeasonInfo.coins = Math.floor(topPlayer.scoreSeason * 0.3)
+        endSeasonInfo.diamonds = Math.floor((topPlayer.scoreSeason * 0.3) / 50)
+        endSeasonInfo.keys = Math.floor((topPlayer.scoreSeason * 0.3) / 500)
 
-        topPlayer.coins = coinLimitVerify(topPlayer.coins, endSeasonInfo.coins) 
-        topPlayer.diamonds += endSeasonInfo.diamonds 
-        topPlayer.keys += endSeasonInfo.keys 
+        topPlayer.coins = coinLimitVerify(topPlayer.coins, endSeasonInfo.coins)
+        topPlayer.diamonds += endSeasonInfo.diamonds
+        topPlayer.keys += endSeasonInfo.keys
 
         const newSeason = {
             season: _group.currentSeason.season,
